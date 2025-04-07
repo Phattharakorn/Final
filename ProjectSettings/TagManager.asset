@@ -5,6 +5,8 @@ TagManager:
   serializedVersion: 2
   tags:
   - Ground
+  - PushPullable
+  - Base
   layers:
   - Default
   - TransparentFX
@@ -13,11 +15,11 @@ TagManager:
   - Water
   - UI
   - Ground
-  - 
-  - 
-  - 
-  - 
-  - 
+  - Base
+  - PushPullOBJ
+  - Wall
+  - PlayerATK
+  - EnemyATK
   - 
   - 
   - 
