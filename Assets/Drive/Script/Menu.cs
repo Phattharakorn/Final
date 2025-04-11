@@ -56,7 +56,7 @@ public class PauseManager : MonoBehaviour
     public void QuitToMenu()
     {
         UnpauseGame();
-        SceneManager.LoadScene("MenuScene");
+        SceneManager.LoadScene("MainMenu");
     }
 
     void UnpauseGame()
