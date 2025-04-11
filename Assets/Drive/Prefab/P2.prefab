@@ -109,6 +109,7 @@ GameObject:
   - component: {fileID: 8644094797618225948}
   - component: {fileID: 987808111404220985}
   - component: {fileID: 4224709308347462704}
+  - component: {fileID: 2318700931944972484}
   m_Layer: 3
   m_Name: P2
   m_TagString: Player
@@ -364,3 +365,19 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   spriteRenderer: {fileID: 987808111404220985}
+--- !u!114 &2318700931944972484
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 9096009523444651912}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bcbfc0628fec92c45acd44fd92aa9840, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  deathDelay: 1
+  enemyLayerName: Enemy
+  animator: {fileID: 8644094797618225948}
+  isDead: 0
