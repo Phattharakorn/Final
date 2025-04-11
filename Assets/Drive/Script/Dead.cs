@@ -28,6 +28,7 @@ public class PlayerDeath : MonoBehaviour
         if (animator != null)
         {
             animator.SetTrigger("Die");
+
             // Optional: Disable movement or other scripts her
             yield return new WaitForSeconds(deathDelay);
 
