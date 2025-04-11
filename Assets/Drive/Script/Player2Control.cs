@@ -22,10 +22,12 @@ public class Player2Control : MonoBehaviour
     public float pullRadius = 3f; // Radius in which the object can be pulled from
     public float maxPullSpeed = 8f;
     public float stopPullRadius = 1f; // The radius within which the object stops being pulled and starts following the player
+    public float currentPullSpeed;
     public float pullAcceleration = 5f;
     public float pullStartDelay = 0.1f;
     public LayerMask pushPullLayer;
     public string pushPullTag = "PushPullable";
+    private bool isPulling;
 
 
     [Header("Stamina Settings")]
@@ -55,8 +57,8 @@ public class Player2Control : MonoBehaviour
     private bool isDropping;
     private bool isTouchingWall;
     private GameObject targetedObject;
-    private float currentPullSpeed;
-    private bool isPulling;
+   
+    
     private Vector3 objectInitialPosition;
     private bool isObjectFollowing = false;
     private float lastStaminaUseTime;
@@ -248,38 +250,23 @@ public class Player2Control : MonoBehaviour
             ReleaseObject();
         }
     }
-    void StartPull()
-    {
-        if (targetedObject == null)
-        {
-            // Look for a pullable object in range
-            Collider2D[] hits = Physics2D.OverlapCircleAll(transform.position, maxPullableDistance, pushPullLayer);
-            foreach (var hit in hits)
-            {
-                if (hit.CompareTag(pushPullTag))
-                {
-                    targetedObject = hit.gameObject;
-                    objectInitialPosition = targetedObject.transform.position; // Save initial position
-                    break;
-                }
-            }
-        }
-
-        if (targetedObject != null && currentStamina > 0) // Ensure stamina is greater than 0 before starting to pull
-        {
-            isPulling = true;
-            UseStamina(staminaDepletionRate * Time.deltaTime); // Deplete stamina initially when pulling
-        }
-    }
 
     void StopPull()
     {
         isPulling = false;
-        currentStamina = Mathf.Max(currentStamina - staminaDepletionRate * Time.deltaTime, 0); // Ensure stamina is never negative
+        currentPullSpeed = 0f; // Reset speed when pulling stops
+        currentStamina = Mathf.Max(currentStamina - staminaDepletionRate * Time.deltaTime, 0);
+        Rigidbody2D targetRb = targetedObject.GetComponent<Rigidbody2D>();
+        if (targetRb != null)
+        {
+            targetRb.isKinematic = false; // Allow the object to move freely (dynamic behavior)
+        }
     }
+
 
     void StopPullingObject()
     {
+        currentPullSpeed = 0f; // Reset speed when pulling stops
         // Stop the object from being pulled and let it follow the player
         Rigidbody2D targetRb = targetedObject.GetComponent<Rigidbody2D>();
         if (targetRb != null)
@@ -291,6 +278,7 @@ public class Player2Control : MonoBehaviour
 
     void ReleaseObject()
     {
+        currentPullSpeed = 0f; // Reset speed when pulling stops
         if (targetedObject != null)
         {
             // Release the object, stop following
@@ -309,16 +297,22 @@ public class Player2Control : MonoBehaviour
     {
         if (targetedObject == null) return;
 
-        // Calculate the direction towards the player
+        // Increase pull speed gradually over time
+        currentPullSpeed = Mathf.MoveTowards(currentPullSpeed, maxPullSpeed, pullAcceleration * Time.deltaTime);
+
+        // Calculate pull direction
         Vector2 pullDir = (transform.position - targetedObject.transform.position).normalized;
 
-        // Move the object towards the player
+        // Apply velocity towards the player
         Rigidbody2D targetRb = targetedObject.GetComponent<Rigidbody2D>();
         if (targetRb != null)
         {
-            targetRb.velocity = pullDir * maxPullSpeed;
+            targetRb.isKinematic = false;
+            targetRb.velocity = pullDir * currentPullSpeed;
         }
+
     }
+
 
 
 

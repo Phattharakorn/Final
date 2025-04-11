@@ -314,6 +314,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   deathDelay: 1
   enemyLayerName: Enemy
+  pushPullLayerName: PushPullOBJ
+  lethalSpeed: 2
   animator: {fileID: 6767438872868291753}
   isDead: 0
 --- !u!1 &4180280480778363612

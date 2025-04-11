@@ -6,11 +6,17 @@ EditorBuildSettings:
   serializedVersion: 2
   m_Scenes:
   - enabled: 1
-    path: Assets/Scenes/SampleScene.unity
-    guid: 8c9cfa26abfee488c85f1582747f6a02
+    path: Assets/Drive/Scene/MainMenu.unity
+    guid: 57f7797f96c2bf142986146392276554
+  - enabled: 1
+    path: Assets/Drive/Scene/P_Drive.unity
+    guid: 8562578c6f7bbdd4e87cb92da422f6ba
+  - enabled: 1
+    path: Assets/Drive/Scene/End_Game.unity
+    guid: afc2b6bd36879884ea3d7455155f884a
   m_configObjects:
     com.unity.adaptiveperformance.loader_settings: {fileID: 11400000, guid: 44b1fee35ffcd6143a4bf99f98e64b3a, type: 2}
     com.unity.adaptiveperformance.simulator.provider_settings: {fileID: 11400000, guid: a90081398e90ba947bf103bb2bcf926f, type: 2}
     com.unity.input.settings: {fileID: 11400000, guid: 7109c92e355e91c42b505a4cab2607d2, type: 2}
-    com.unity.input.settings.actions: {fileID: -944628639613478452, guid: aa1a188cef32a934684b5b5ebec417b9, type: 3}
+    com.unity.input.settings.actions: {fileID: -944628639613478452, guid: 37c0f3f2c04e97f418791bb6a1ac1ce6, type: 3}
     com.unity.xr.management.loader_settings: {fileID: 11400000, guid: 87bca9adad332cd43ac92908a135e03f, type: 2}

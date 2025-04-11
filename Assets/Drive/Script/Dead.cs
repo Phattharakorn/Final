@@ -6,7 +6,9 @@ public class PlayerDeath : MonoBehaviour
 {
     public float deathDelay = 1.5f; // Time before reloading scene
     public string enemyLayerName = "Enemy";
-    public Animator animator; // Reference to player's Animator
+    public string pushPullLayerName = "PushPullOBJ";
+    public float lethalSpeed = 8f; // Speed threshold for deadly push/pull objects
+    public Animator animator;
 
     public bool isDead = false;
 
@@ -14,9 +16,22 @@ public class PlayerDeath : MonoBehaviour
     {
         if (isDead) return;
 
-        if (collision.gameObject.layer == LayerMask.NameToLayer(enemyLayerName))
+        GameObject other = collision.gameObject;
+        int otherLayer = other.layer;
+
+        if (otherLayer == LayerMask.NameToLayer(enemyLayerName))
         {
+            // Enemy kills instantly
             StartCoroutine(HandleDeath());
+        }
+        else if (otherLayer == LayerMask.NameToLayer(pushPullLayerName))
+        {
+            // PushPullOBJ kills only if moving fast enough
+            Rigidbody2D rb = other.GetComponent<Rigidbody2D>();
+            if (rb != null && rb.velocity.magnitude >= lethalSpeed)
+            {
+                StartCoroutine(HandleDeath());
+            }
         }
     }
 
@@ -24,15 +39,14 @@ public class PlayerDeath : MonoBehaviour
     {
         isDead = true;
 
-        // Trigger death animation
         if (animator != null)
         {
             animator.SetTrigger("Die");
-
-            // Optional: Disable movement or other scripts her
-            yield return new WaitForSeconds(deathDelay);
-
-            SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
         }
+
+        // Optional: disable movement scripts, etc.
+        yield return new WaitForSeconds(deathDelay);
+
+        SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
     }
 }

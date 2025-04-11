@@ -1613,8 +1613,8 @@ PrefabInstance:
     m_TransformParent: {fileID: 0}
     m_Modifications:
     - target: {fileID: 2318700931944972484, guid: b33fb1139fe3e5b42ba42f6dc1c3ddf2, type: 3}
-      propertyPath: deathDelay
-      value: 1
+      propertyPath: lethalSpeed
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 2941832516811780321, guid: b33fb1139fe3e5b42ba42f6dc1c3ddf2, type: 3}
       propertyPath: m_LocalPosition.x
@@ -1660,6 +1660,10 @@ PrefabInstance:
       propertyPath: staminaSlider
       value: 
       objectReference: {fileID: 171469136}
+    - target: {fileID: 7394084335187410822, guid: b33fb1139fe3e5b42ba42f6dc1c3ddf2, type: 3}
+      propertyPath: pullAcceleration
+      value: 2
+      objectReference: {fileID: 0}
     - target: {fileID: 9096009523444651912, guid: b33fb1139fe3e5b42ba42f6dc1c3ddf2, type: 3}
       propertyPath: m_Name
       value: P2
@@ -1685,6 +1689,10 @@ PrefabInstance:
       propertyPath: staminaSlider
       value: 
       objectReference: {fileID: 1833436865}
+    - target: {fileID: 8544994910201550830, guid: 4c546684c093d3c4f896c945afc91657, type: 3}
+      propertyPath: lethalSpeed
+      value: 2
+      objectReference: {fileID: 0}
     - target: {fileID: 8917185401470888223, guid: 4c546684c093d3c4f896c945afc91657, type: 3}
       propertyPath: m_LocalPosition.x
       value: -2.5

@@ -233,7 +233,8 @@ MonoBehaviour:
   pullRadius: 3
   maxPullSpeed: 4
   stopPullRadius: 1.5
-  pullAcceleration: 1
+  currentPullSpeed: 0
+  pullAcceleration: 2
   pullStartDelay: 0.1
   pushPullLayer:
     serializedVersion: 2
@@ -379,5 +380,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   deathDelay: 1
   enemyLayerName: Enemy
+  pushPullLayerName: PushPullOBJ
+  lethalSpeed: 2
   animator: {fileID: 8644094797618225948}
   isDead: 0
