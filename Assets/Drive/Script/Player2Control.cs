@@ -27,13 +27,14 @@ public class Player2Control : MonoBehaviour
     public LayerMask pushPullLayer;
     public string pushPullTag = "PushPullable";
 
+
     [Header("Stamina Settings")]
-    public float maxStamina = 100f;
+    public float maxStamina = 100;
     public float currentStamina;
-    public float staminaRegenerationRate = 5f;
-    public float staminaDepletionRate = 20f; // Depletion when using pull
+    public float staminaRegenerationRate = 5;
+    public float staminaDepletionRate = 20; // Depletion when using pull
     public float staminaRecoveryDelay = 2f; // Delay before regeneration starts
-    private float lowStaminaThreshold = 10f; // Threshold for low stamina (below this value, the object becomes dynamic again)
+    private float lowStaminaThreshold = 10; // Threshold for low stamina (below this value, the object becomes dynamic again)
 
 
     [Header("Jump Control")]
@@ -138,7 +139,12 @@ public class Player2Control : MonoBehaviour
 
     void UseStamina(float amount)
     {
-        currentStamina = Mathf.Max(currentStamina - amount, 0); // Decrease stamina but don't let it go below 0
+        // Decrease stamina
+        currentStamina -= amount;
+        if (currentStamina < 0)  // If it goes below 0, clamp to 0
+        {
+            currentStamina = 0;
+        }
     }
 
     System.Collections.IEnumerator DropThroughPlatform()
@@ -161,7 +167,6 @@ public class Player2Control : MonoBehaviour
     }
     void HandlePulling()
     {
-        // If stamina is 0 and the key is still held, stop pulling and release the object
         if (currentStamina <= 0 && isPulling)
         {
             StopPull();
@@ -169,72 +174,80 @@ public class Player2Control : MonoBehaviour
             return;
         }
 
-        // Check if the key is held down
-        if (Input.GetKey(KeyCode.Keypad2)) // While holding the key
+        if (Input.GetKey(KeyCode.Keypad2)) // While holding the pull key
         {
-            // If no pullable object is targeted
-            if (targetedObject == null)
-            {
-                // Look for a pullable object in range
-                Collider2D[] hits = Physics2D.OverlapCircleAll(transform.position, maxPullableDistance, pushPullLayer);
-                foreach (var hit in hits)
-                {
-                    if (hit.CompareTag(pushPullTag))
-                    {
-                        targetedObject = hit.gameObject;
-                        objectInitialPosition = targetedObject.transform.position; // Save initial position
-                        break;
-                    }
-                }
+            // Center the circle around the player
+            Vector2 circleCenter = transform.position;
+            float radius = maxPullableDistance;  // The radius for pulling objects
 
-                // If no pullable object was found, drain stamina like Player 1
-                if (targetedObject == null)
+            // Find all objects within the range using OverlapCircle
+            Collider2D[] hits = Physics2D.OverlapCircleAll(circleCenter, radius, pushPullLayer);
+
+            bool foundObject = false;
+
+            // Check if any object within the radius is pullable
+            foreach (var hit in hits)
+            {
+                if (hit.CompareTag(pushPullTag))
                 {
-                    UseStamina(staminaDepletionRate * Time.deltaTime);  // Drain stamina constantly
+                    targetedObject = hit.gameObject;
+                    objectInitialPosition = targetedObject.transform.position;
+                    foundObject = true;
+                    break;
                 }
             }
 
-            // If an object is being pulled
+            // If no pullable object was found, deplete stamina
+            if (!foundObject)
+            {
+                UseStamina(staminaDepletionRate * Time.deltaTime);
+            }
+
+            // If an object is being pulled, handle the pulling mechanics
             if (targetedObject != null)
             {
-                // Calculate the distance from the player to the object
                 float distanceToObject = Vector2.Distance(transform.position, targetedObject.transform.position);
 
-                // If the object is within the stop radius, it starts following the player (grabbed behavior)
+                // If the object is within the stop radius, make it follow the player
                 if (distanceToObject <= stopPullRadius)
                 {
                     if (currentStamina > lowStaminaThreshold)
                     {
-                        isObjectFollowing = true;  // Start following the player if stamina is high enough
-                        StopPullingObject();  // Stop pulling the object, it's now following
+                        isObjectFollowing = true;
+                        StopPullingObject();
+                        // Set the object to kinematic and stop its velocity
+                        Rigidbody2D targetRb = targetedObject.GetComponent<Rigidbody2D>();
+                        if (targetRb != null)
+                        {
+                            targetRb.velocity = Vector2.zero;  // Set velocity to 0
+                            targetRb.isKinematic = true;  // Make the object kinematic (no physics applied)
+                        }
                     }
                     else
                     {
-                        isObjectFollowing = false;  // If stamina is low, it will become dynamic again
-                        ReleaseObject(); // Revert the object to dynamic behavior when stamina is low
+                        isObjectFollowing = false;
+                        ReleaseObject();
                     }
                 }
                 else
                 {
-                    isObjectFollowing = false;  // Not within the stop pull radius yet
-                    AcceleratePull();  // Continue pulling the object towards the player
+                    isObjectFollowing = false;
+                    AcceleratePull(); // Pull the object toward the player
                 }
 
-                // Deplete stamina over time as the ability is held
-                float staminaToDeplete = staminaDepletionRate * Time.deltaTime;  // Deplete stamina constantly
-                UseStamina(staminaToDeplete);  // Deplete stamina over time
+                // Deplete stamina as the ability is held
+                UseStamina(staminaDepletionRate * Time.deltaTime);
             }
         }
-        else if (isPulling) // When the key is released
+        else if (isPulling) // When the key is released, stop pulling
         {
-            StopPull();  // Stop pulling when the key is released
+            StopPull();
         }
-        else if (isObjectFollowing) // If the object is following and the key is released
+        else if (isObjectFollowing) // If the object is following, release it
         {
-            ReleaseObject();  // Release the object when the key is released
+            ReleaseObject();
         }
     }
-
     void StartPull()
     {
         if (targetedObject == null)
@@ -322,5 +335,6 @@ public class Player2Control : MonoBehaviour
     {
         Gizmos.color = Color.cyan;
         Gizmos.DrawWireSphere(transform.position, pullRadius);
+
     }
 }
