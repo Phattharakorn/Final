@@ -6,8 +6,8 @@ public class KeyDoor : MonoBehaviour
 {
     [SerializeField] private KeyScript.KeyType KeyType;
 
-    //public AudioSource playerSource;
-    //public AudioClip doorSound;
+    public AudioSource playerSource;
+    public AudioClip doorSound;
     public KeyScript.KeyType GetKeyType()
     {
         return KeyType;
@@ -15,7 +15,7 @@ public class KeyDoor : MonoBehaviour
 
     public void OpenDoor()
     {
-        //playerSource.PlayOneShot(doorSound);
+        playerSource.PlayOneShot(doorSound);
         gameObject.SetActive(false);
 
     }

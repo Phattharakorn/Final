@@ -3,6 +3,9 @@ using UnityEngine.UI; // Add this for UI Slider
 
 public class Player1Control : MonoBehaviour
 {
+    public AudioSource playerSource;
+    public AudioClip keySound;
+
     [Header("Movement Settings")]
     public float moveSpeed = 5f;
     public float jumpForce = 6f;
@@ -135,6 +138,7 @@ public class Player1Control : MonoBehaviour
     {
         if (Input.GetKey(KeyCode.K) && currentStamina >= staminaDepletionRate)
         {
+            playerSource.PlayOneShot(keySound);
             UseStamina(staminaDepletionRate);
             PushForwardObject();
         }

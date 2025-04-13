@@ -3,6 +3,9 @@ using UnityEngine.UI; // Add this namespace for Slider
 
 public class Player2Control : MonoBehaviour
 {
+    public AudioSource playerSource;
+    public AudioClip pullSound;
+
     [Header("Movement Settings")]
     public float moveSpeed = 5f;
     public float jumpForce = 12f;
@@ -178,6 +181,7 @@ public class Player2Control : MonoBehaviour
 
         if (Input.GetKey(KeyCode.Keypad2)) // While holding the pull key
         {
+            playerSource.PlayOneShot(pullSound);
             // Center the circle around the player
             Vector2 circleCenter = transform.position;
             float radius = maxPullableDistance;  // The radius for pulling objects

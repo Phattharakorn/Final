@@ -7,7 +7,7 @@ public class MainMenu : MonoBehaviour
     public void StartGame()
     {
         Time.timeScale = 1f; // Just in case you're resuming from pause
-        SceneManager.LoadScene("P_Drive"); // Replace with your actual scene name
+        SceneManager.LoadScene("MainGame"); // Replace with your actual scene name
         // OR use SceneManager.LoadScene(1); if you're using scene index
     }
 

@@ -5,8 +5,8 @@ using UnityEngine;
 public class KeyHolder : MonoBehaviour
 {
     private List<KeyScript.KeyType> keyList;
-    //public AudioSource playerSource;
-    //public AudioClip keySound;
+    public AudioSource playerSource;
+    public AudioClip keySound;
 
     private void Awake()
     {
@@ -15,7 +15,7 @@ public class KeyHolder : MonoBehaviour
 
     public void AddKey(KeyScript.KeyType keyType)
     {
-        //playerSource.PlayOneShot(keySound);
+        playerSource.PlayOneShot(keySound);
         Debug.Log("Added Key:" + keyType);
         keyList.Add(keyType);
     }

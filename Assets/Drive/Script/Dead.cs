@@ -9,6 +9,8 @@ public class PlayerDeath : MonoBehaviour
     public string pushPullLayerName = "PushPullOBJ";
     public float lethalSpeed = 8f; // Speed threshold for deadly push/pull objects
     public Animator animator;
+    public AudioSource playerSource;
+    public AudioClip deadSound;
 
     public bool isDead = false;
 
@@ -21,15 +23,18 @@ public class PlayerDeath : MonoBehaviour
 
         if (otherLayer == LayerMask.NameToLayer(enemyLayerName))
         {
+            playerSource.PlayOneShot(deadSound);
             // Enemy kills instantly
             StartCoroutine(HandleDeath());
         }
         else if (otherLayer == LayerMask.NameToLayer(pushPullLayerName))
         {
+
             // PushPullOBJ kills only if moving fast enough
             Rigidbody2D rb = other.GetComponent<Rigidbody2D>();
             if (rb != null && rb.velocity.magnitude >= lethalSpeed)
             {
+                playerSource.PlayOneShot(deadSound);
                 StartCoroutine(HandleDeath());
             }
         }

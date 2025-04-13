@@ -22,10 +22,10 @@ TagManager:
   - PlayerATK
   - EnemyATK
   - Enemy
-  - 
-  - 
-  - 
-  - 
+  - Key
+  - Door
+  - End
+  - PostProcess
   - 
   - 
   - 
